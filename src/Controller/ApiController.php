@@ -247,9 +247,8 @@ class ApiController extends AbstractController
     public function show(Partenaire $partenaire, PartenaireRepository $partenaireRepository, SerializerInterface $serializer)
     {
         $partenaire = $partenaireRepository->find($partenaire->getId());
-        $data = $serializer->serialize($partenaire, 'json', [
-            'groups' => ['show']
-        ]);
+        $data = $serializer->serialize($partenaire);
+      
         var_dump($data);
         return new Response($data, 200);
     }
@@ -260,7 +259,7 @@ class ApiController extends AbstractController
     {
         $values = json_decode($request->getContent());
         $user = $userRepo->findOneByUsername($values->username);
-        if ($user->getStatus() == "debloquer") {
+        if ($user->getStatus()=="debloquer") {
             $user->SetStatus("bloquer");
             $user->SetRoles(["ROLE_USERLOCK"]);
             $entityManager->flush();
@@ -282,3 +281,4 @@ class ApiController extends AbstractController
         }
     }
 }
+
